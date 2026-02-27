@@ -75,3 +75,11 @@
 				.colyel{
 				color: #f5c842;
 				}
+
+
+				@media (max-width: 768px) {
+  				.maincard {
+    				transform: scale(0.92);
+    				transform-origin: top center;
+  				}
+				}
