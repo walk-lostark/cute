@@ -75,3 +75,15 @@
 				.colyel{
 				color: #f5c842;
 				}
+/* maincard가 col-md-10 같은 부트스트랩 폭 제한을 먹어도,
+   화면 전체로 강제로 늘려서 배경이 꽉 차게 */
+.maincard {
+  width: 100vw !important;
+  max-width: 100vw !important;
+  margin-left: calc(50% - 50vw) !important;  /* 가운데 정렬 박스 탈출 */
+  margin-right: calc(50% - 50vw) !important;
+  min-height: 100vh !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+}
