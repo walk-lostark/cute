@@ -156,9 +156,47 @@
       
       <script src='https://wessch.cafe24.com/us/room3.js'></script> 
       <script>
-      
-      $('.maincard').addClass('col-md-10 mx-auto');
-      </script>
+  $('.maincard').addClass('col-md-10 mx-auto');
+
+  // ✅ Fullscreen(전체화면) 진입 차단
+  (function () {
+    const noop = () => Promise.resolve();
+
+    if (Element.prototype.requestFullscreen) Element.prototype.requestFullscreen = noop;
+    if (Element.prototype.webkitRequestFullscreen) Element.prototype.webkitRequestFullscreen = noop;
+    if (Element.prototype.mozRequestFullScreen) Element.prototype.mozRequestFullScreen = noop;
+    if (Element.prototype.msRequestFullscreen) Element.prototype.msRequestFullscreen = noop;
+
+    const exitFS = () => {
+      const fsEl =
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement;
+
+      if (fsEl) {
+        const exit =
+          document.exitFullscreen ||
+          document.webkitExitFullscreen ||
+          document.mozCancelFullScreen ||
+          document.msExitFullscreen;
+
+        if (exit) exit.call(document);
+      }
+    };
+
+    // 다음 버튼 클릭 때마다 전체화면이면 즉시 종료
+    document.addEventListener('click', (e) => {
+      const t = e.target;
+      if (t && t.classList && t.classList.contains('btn_next')) {
+        exitFS();
+        setTimeout(exitFS, 0);
+        setTimeout(exitFS, 50);
+        setTimeout(exitFS, 150);
+      }
+    }, true);
+  })();
+</script>
       
    </body>
 </html>
