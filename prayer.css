@@ -1,88 +1,92 @@
 .maincard {
-				display:none; 
-				}
-				
-				h6 {
-				color:#ffffff;
-				
-				}
-				
-				html,body {
-				height: 100%;
-				}
-				
-				BODY {
-				min-height: 100%;
-				background-color: #000;
-				
-				background-position: center center;
-				background-repeat: no-repeat;
-				background-size: cover;
-				}
-				
-				h2,h3, h4, h5,li {
-				color:#fff;
-				}
-				hr {
-				background-color: #aaa;
-				height: 2px; 
-				} 
-				
-				hr.sm {
-				background-color: #aaa;
-				height: 1px; 
-				} 
-				
-				li {
-				font-size:18px;
-				
-				}
-				btn_next {
-				font-weight:bold;
-				
-				}
-				
-				.oneline::placeholder {
-				color: #f5c842;
-				
-				} 
-				
-				.oneline {
-				
-				font-size: 24px;
-				color: #f5c842;
-				weight:bold;
-				border: none; 
-				background: transparent;
-				width:100%;
-				
-				}
-				.oneline:focus {
-				font-size: 24px;
-				color: #f5c842;
-				weight:bold;
-				border: none; 
-				background: transparent;
-				outline:none;
-				
-				}
-				
-				input[type="number"]::-webkit-outer-spin-button,
-				input[type="number"]::-webkit-inner-spin-button {
-				-webkit-appearance: none;
-				margin: 0;
-				}
-				.colyel{
-				color: #f5c842;
-				}
-/* maincard가 col-md-10 같은 부트스트랩 폭 제한을 먹어도,
-   화면 전체로 강제로 늘려서 배경이 꽉 차게 */
+  display: none;
+}
+
+h6 {
+  color: #ffffff;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+BODY {
+  min-height: 100%;
+  background-color: #000;
+
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+h2, h3, h4, h5, li {
+  color: #fff;
+}
+
+hr {
+  background-color: #aaa;
+  height: 2px;
+}
+
+hr.sm {
+  background-color: #aaa;
+  height: 1px;
+}
+
+li {
+  font-size: 18px;
+}
+
+/* ✅ 오타 수정: btn_next -> .btn_next (클래스 선택자) */
+.btn_next {
+  font-weight: bold;
+}
+
+.oneline::placeholder {
+  color: #f5c842;
+}
+
+.oneline {
+  font-size: 24px;
+  color: #f5c842;
+  font-weight: bold; /* ✅ weight:bold -> font-weight:bold */
+  border: none;
+  background: transparent;
+  width: 100%;
+}
+
+.oneline:focus {
+  font-size: 24px;
+  color: #f5c842;
+  font-weight: bold; /* ✅ weight:bold -> font-weight:bold */
+  border: none;
+  background: transparent;
+  outline: none;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.colyel {
+  color: #f5c842;
+}
+
+/* =========================================================
+   ✅ 핵심 추가: PC에서도 배경이 화면(브라우저)에 꽉 차게
+   - col-md-10 mx-auto 같은 폭 제한을 CSS로 무력화
+   - 꼭 맨 아래에 있어야 덮어씁니다.
+   ========================================================= */
 .maincard {
   width: 100vw !important;
   max-width: 100vw !important;
-  margin-left: calc(50% - 50vw) !important;  /* 가운데 정렬 박스 탈출 */
+  margin-left: calc(50% - 50vw) !important;
   margin-right: calc(50% - 50vw) !important;
   min-height: 100vh !important;
+
   background-size: cover !important;
   background-position: center center !important;
   background-repeat: no-repeat !important;
