@@ -101,9 +101,9 @@ div, span, button, a {
 
 제목::[단체스샷 잠깐][[보시고 가실게요~!]]
 ===
-<div class="group-shot-wrap">
-  <img id="randomGroupShot" src="" alt="커염 길드 단체스샷" class="group-shot">
-</div>
+<center>
+  <img id="randomGroupShot" src="" alt="커염 길드 단체스샷" style="width:100%; max-width:720px; height:auto; border-radius:18px;">
+</center>
 ---
 다음버튼::계속
 
@@ -269,30 +269,6 @@ div, span, button, a {
       bottom: 12px;
     }
   }
-   .group-shot-wrap {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.group-shot {
-  width: auto;
-  max-width: 80%;
-  height: auto;
-  max-height: 48vh;
-  object-fit: contain;
-  border-radius: 18px;
-}
-
-@media (max-width: 768px) {
-  .group-shot {
-    width: 100%;
-    max-width: 720px;
-    max-height: none;
-    height: auto;
-  }
-}
 </style>
 
 <script>
