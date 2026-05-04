@@ -101,9 +101,9 @@ div, span, button, a {
 
 제목::[단체스샷 잠깐][[보시고 가실게요~!]]
 ===
-<center>
-  <img id="randomGroupShot" src="" alt="커염 길드 단체스샷" style="width:100%; max-width:720px; height:auto; border-radius:18px;">
-</center>
+<div class="group-shot-wrap">
+  <img id="randomGroupShot" src="" alt="커염 길드 단체스샷" class="group-shot">
+</div>
 ---
 다음버튼::계속
 
@@ -269,6 +269,22 @@ div, span, button, a {
       bottom: 12px;
     }
   }
+   .group-shot-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.group-shot {
+  width: 100%;
+  max-width: 900px;
+
+  height: 60vh;        /* 🔥 핵심: 높이 고정 */
+  max-height: 600px;   /* 🔥 PC에서 너무 커지는 것 방지 */
+
+  object-fit: contain; /* 🔥 비율 유지 */
+  border-radius: 18px;
+}
 </style>
 
 <script>
