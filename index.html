@@ -99,6 +99,19 @@ div, span, button, a {
 <div class='maincard clearfix' data-bg="https://walk-lostark.github.io/cute/s/phone99.jpg" data-desktop="https://walk-lostark.github.io/cute/s/00.jpg">
 줄바꿈::
 
+제목::[단체스샷 잠깐][[보시고 가실게요~!]]
+===
+<center>
+  <img id="randomGroupShot" src="" alt="커염 길드 단체스샷" style="width:100%; max-width:720px; height:auto; border-radius:18px;">
+</center>
+---
+다음버튼::계속
+
+</div>
+
+<div class='maincard clearfix' data-bg="https://walk-lostark.github.io/cute/s/phone99.jpg" data-desktop="https://walk-lostark.github.io/cute/s/00.jpg">
+줄바꿈::
+
 제목::[이런 길드원을][[모집하고 있어요!]]
 ===
 설명*::[착한]사람, [매너]있는 사람!
@@ -324,5 +337,43 @@ function detectSlideChange() {
 // 주기적으로 감지 (room3.js 대응)
 setInterval(detectSlideChange, 300);
 </script>
+   
+<script>
+  // 단체스샷 페이지: v01.jpg ~ v07.jpg 중 랜덤 표시
+  (function () {
+    const groupShotImages = [
+      'v01.png', 'v02.png', 'v03.png', 'v04.png',
+      'v05.png', 'v06.png', 'v07.png'
+    ];
+
+    function setRandomGroupShot() {
+      const img = document.getElementById('randomGroupShot');
+      if (!img) return;
+
+      const randomFile = groupShotImages[Math.floor(Math.random() * groupShotImages.length)];
+      img.src = 'https://walk-lostark.github.io/cute/s/' + randomFile;
+    }
+
+    document.addEventListener('DOMContentLoaded', setRandomGroupShot);
+
+    // 슬라이드를 넘기다가 단체스샷 페이지가 보일 때마다 다시 랜덤 표시
+    setInterval(function () {
+      const img = document.getElementById('randomGroupShot');
+      if (!img) return;
+
+      const card = img.closest('.maincard');
+      if (!card) return;
+
+      const style = window.getComputedStyle(card);
+      if (style.display !== 'none' && card.dataset.groupShotVisible !== 'true') {
+        card.dataset.groupShotVisible = 'true';
+        setRandomGroupShot();
+      } else if (style.display === 'none') {
+        card.dataset.groupShotVisible = 'false';
+      }
+    }, 300);
+  })();
+</script>
+
    </body>
 </html>
