@@ -247,7 +247,39 @@ div, span, button, a {
     // c01.png ~ c27.png
     const num = Math.floor(Math.random() * 27) + 1;
 
-const fileName = 'https://walk-lostark.github.io/cute/s/c01.png';
+const images = [
+  'c01.png',
+  'c02.png',
+  'c03.png',
+  'c04.png',
+  'c05.png',
+  'c06.png',
+  'c07.png',
+  'c08.png',
+  'c09.png',
+  'c10.png',
+  'c11.png',
+  'c12.png',
+  'c13.png',
+  'c14.png',
+  'c15.png',
+  'c16.png',
+  'c17.png',
+  'c18.png',
+  'c19.png',
+  'c20.png',
+  'c21.png',
+  'c22.png',
+  'c23.png',
+  'c24.png',
+  'c25.png',
+  'c26.png',
+  'c27.png'
+];
+
+const randomFile = images[Math.floor(Math.random() * images.length)];
+
+const fileName = 'https://walk-lostark.github.io/cute/s/' + randomFile;
 
     // 이미지 파일이 html과 같은 폴더에 있을 때
     img.style.opacity = 0;
