@@ -227,12 +227,31 @@ div, span, button, a {
     z-index: 9999;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.25s ease;
+    transform: scale(0.2) translateY(40px);
+  }
+
+  #randomCornerImg.pop {
+    animation: popUp 0.55s ease-out forwards;
+  }
+
+  @keyframes popUp {
+    0% {
+      opacity: 0;
+      transform: scale(0.2) translateY(60px);
+    }
+    65% {
+      opacity: 1;
+      transform: scale(1.18) translateY(-8px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
   }
 
   @media (max-width: 768px) {
     #randomCornerImg {
-      width: 200px;
+      width: 220px;
       right: 12px;
       bottom: 12px;
     }
@@ -240,65 +259,54 @@ div, span, button, a {
 </style>
 
 <script>
+  const cornerImages = [
+    'c01.png', 'c02.png', 'c03.png', 'c04.png', 'c05.png',
+    'c06.png', 'c07.png', 'c08.png', 'c09.png', 'c10.png',
+    'c11.png', 'c12.png', 'c13.png', 'c14.png', 'c15.png',
+    'c16.png', 'c17.png', 'c18.png', 'c19.png', 'c20.png',
+    'c21.png', 'c22.png', 'c23.png', 'c24.png', 'c25.png',
+    'c26.png', 'c27.png'
+  ];
+
+  let lastImage = '';
+
   function showRandomCornerImage() {
     const img = document.getElementById('randomCornerImg');
     if (!img) return;
 
-    // c01.png ~ c27.png
-    const num = Math.floor(Math.random() * 27) + 1;
+    let randomFile;
 
-const images = [
-  'c01.png',
-  'c02.png',
-  'c03.png',
-  'c04.png',
-  'c05.png',
-  'c06.png',
-  'c07.png',
-  'c08.png',
-  'c09.png',
-  'c10.png',
-  'c11.png',
-  'c12.png',
-  'c13.png',
-  'c14.png',
-  'c15.png',
-  'c16.png',
-  'c17.png',
-  'c18.png',
-  'c19.png',
-  'c20.png',
-  'c21.png',
-  'c22.png',
-  'c23.png',
-  'c24.png',
-  'c25.png',
-  'c26.png',
-  'c27.png'
-];
+    do {
+      randomFile = cornerImages[Math.floor(Math.random() * cornerImages.length)];
+    } while (randomFile === lastImage && cornerImages.length > 1);
 
-const randomFile = images[Math.floor(Math.random() * images.length)];
+    lastImage = randomFile;
 
-const fileName = 'https://walk-lostark.github.io/cute/s/' + randomFile;
+    const fileName = 'https://walk-lostark.github.io/cute/s/' + randomFile;
 
-    // 이미지 파일이 html과 같은 폴더에 있을 때
+    img.classList.remove('pop');
     img.style.opacity = 0;
 
     setTimeout(() => {
       img.src = fileName;
-      img.style.opacity = 1;
-    }, 120);
+
+      img.onload = function () {
+        img.classList.remove('pop');
+        void img.offsetWidth;
+        img.classList.add('pop');
+      };
+    }, 80);
   }
 
   // 첫 화면에서도 랜덤 이미지 표시
   document.addEventListener('DOMContentLoaded', showRandomCornerImage);
 
-  // 다음 버튼을 누를 때마다 랜덤 이미지 변경
+  // 페이지가 넘어갈 때마다 랜덤 이미지 변경 + 튀어나오기
   document.addEventListener('click', function(e) {
     const t = e.target;
 
     if (t && t.classList && t.classList.contains('btn_next')) {
-      setTimeout(showRandomCornerImage, 100);
+      setTimeout(showRandomCornerImage, 120);
     }
   });
 </script>
