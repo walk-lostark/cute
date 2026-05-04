@@ -213,38 +213,61 @@ div, span, button, a {
       }
     }, true);
   })();
+</script>
+      <!-- 우측 하단 랜덤 캐릭터 이미지 -->
+<img id="randomCornerImg" src="" alt="랜덤 이미지">
+
 <style>
-  #random-corner-img {
+  #randomCornerImg {
     position: fixed;
-    right: 12px;
-    bottom: 12px;
+    right: 18px;
+    bottom: 18px;
     width: 120px;
     height: auto;
     z-index: 9999;
     pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  @media (max-width: 768px) {
+    #randomCornerImg {
+      width: 90px;
+      right: 12px;
+      bottom: 12px;
+    }
   }
 </style>
 
-<img id="random-corner-img" src="" alt="random">
-
 <script>
   function showRandomCornerImage() {
-    const num = String(Math.floor(Math.random() * 27) + 1).padStart(2, '0');
-    const imgPath = `https://walk-lostark.github.io/cute/s/c${num}.png`;
+    const img = document.getElementById('randomCornerImg');
+    if (!img) return;
 
-    document.getElementById('random-corner-img').src = imgPath;
+    // c01.png ~ c27.png
+    const num = Math.floor(Math.random() * 27) + 1;
+    const fileName = 'c' + String(num).padStart(2, '0') + '.png';
+
+    // 이미지 파일이 html과 같은 폴더에 있을 때
+    img.style.opacity = 0;
+
+    setTimeout(() => {
+      img.src = fileName;
+      img.style.opacity = 1;
+    }, 120);
   }
 
-  // 첫 화면에서도 랜덤 표시
-  showRandomCornerImage();
+  // 첫 화면에서도 랜덤 이미지 표시
+  document.addEventListener('DOMContentLoaded', showRandomCornerImage);
 
-  // 다음 페이지 넘길 때마다 랜덤 변경
-  document.addEventListener('click', function (e) {
-    if (e.target && e.target.classList.contains('btn_next')) {
-      showRandomCornerImage();
+  // 다음 버튼을 누를 때마다 랜덤 이미지 변경
+  document.addEventListener('click', function(e) {
+    const t = e.target;
+
+    if (t && t.classList && t.classList.contains('btn_next')) {
+      setTimeout(showRandomCornerImage, 100);
     }
   });
 </script>
-      
    </body>
 </html>
