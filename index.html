@@ -302,13 +302,27 @@ div, span, button, a {
   document.addEventListener('DOMContentLoaded', showRandomCornerImage);
 
   // 페이지가 넘어갈 때마다 랜덤 이미지 변경 + 튀어나오기
-  document.addEventListener('click', function(e) {
-    const t = e.target;
+// 현재 활성 카드 추적
+let currentIndex = 0;
 
-    if (t && t.classList && t.classList.contains('btn_next')) {
-      setTimeout(showRandomCornerImage, 120);
+function detectSlideChange() {
+  const cards = document.querySelectorAll('.maincard');
+
+  cards.forEach((card, index) => {
+    const style = window.getComputedStyle(card);
+
+    // 현재 화면에 보이는 카드 찾기
+    if (style.display !== 'none' && index !== currentIndex) {
+      currentIndex = index;
+
+      // 페이지 바뀌면 이미지 변경
+      showRandomCornerImage();
     }
   });
+}
+
+// 주기적으로 감지 (room3.js 대응)
+setInterval(detectSlideChange, 300);
 </script>
    </body>
 </html>
