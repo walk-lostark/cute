@@ -102,9 +102,13 @@ div, span, button, a {
 제목::[단체스샷 잠깐][[보시고 가실게요~!]]
 ===
 <div class="groupShotWrap">
-  <button type="button" class="groupShotArrow groupShotPrev" aria-label="이전 단체스샷" onclick="changeGroupShot(event)">&lt;</button>
   <img id="randomGroupShot" src="https://walk-lostark.github.io/cute/s/v01.png" alt="커염 길드 단체스샷">
-  <button type="button" class="groupShotArrow groupShotNext" aria-label="다음 단체스샷" onclick="changeGroupShot(event)">&gt;</button>
+
+  <button type="button"
+    class="btn btn-warning groupShotChangeBtn"
+    onclick="changeGroupShot(event)">
+    다른 사진 보기♥
+  </button>
 </div>
 ---
 다음버튼::계속
@@ -273,23 +277,20 @@ div, span, button, a {
   }
 
   .groupShotWrap {
-    position: relative;
-    width: 100%;
-    max-width: 820px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-  }
+  position: relative;
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto;
+  text-align: center;
+}
 
-  #randomGroupShot {
-    width: 100%;
-    max-width: 720px;
-    height: auto;
-    border-radius: 18px;
-    transition: opacity 0.18s ease, transform 0.18s ease;
-  }
+.groupShotChangeBtn {
+  display: block;
+  margin: 14px auto 0;
+  font-weight: bold;
+  border-radius: 999px;
+  padding: 8px 22px;
+}
 
   #randomGroupShot.changing {
     opacity: 0.35;
@@ -468,9 +469,9 @@ setInterval(detectSlideChange, 300);
 
       // onclick이 막히는 환경까지 대비해서 이벤트 위임도 함께 등록
       document.addEventListener('click', function (event) {
-        if (event.target && event.target.closest('.groupShotArrow')) {
-          window.changeGroupShot(event);
-        }
+if (event.target && event.target.closest('.groupShotChangeBtn')) {
+  window.changeGroupShot(event);
+}
       }, true);
     }
 
