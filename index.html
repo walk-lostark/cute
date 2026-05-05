@@ -102,9 +102,9 @@ div, span, button, a {
 제목::[단체스샷 잠깐][[보시고 가실게요~!]]
 ===
 <div class="groupShotWrap">
-  <button type="button" class="groupShotArrow groupShotPrev" aria-label="이전 단체스샷">&lt;</button>
-  <img id="randomGroupShot" src="" alt="커염 길드 단체스샷">
-  <button type="button" class="groupShotArrow groupShotNext" aria-label="다음 단체스샷">&gt;</button>
+  <button type="button" class="groupShotArrow groupShotPrev" aria-label="이전 단체스샷" onclick="changeGroupShot(event)">&lt;</button>
+  <img id="randomGroupShot" src="https://walk-lostark.github.io/cute/s/v01.png" alt="커염 길드 단체스샷">
+  <button type="button" class="groupShotArrow groupShotNext" aria-label="다음 단체스샷" onclick="changeGroupShot(event)">&gt;</button>
 </div>
 ---
 다음버튼::계속
@@ -408,50 +408,79 @@ setInterval(detectSlideChange, 300);
 </script>
    
 <script>
-  // 단체스샷 페이지: v01.png ~ v07.png 중 랜덤 표시 + 좌우 화살표 클릭 시 다른 사진 표시
+  // 단체스샷 페이지: v01.png ~ v07.png 중 현재 사진과 다른 랜덤 사진 표시
   (function () {
     const groupShotImages = [
       'v01.png', 'v02.png', 'v03.png', 'v04.png',
       'v05.png', 'v06.png', 'v07.png'
     ];
 
-    let lastGroupShot = '';
+    let currentGroupShotIndex = -1;
 
-    function setRandomGroupShot() {
+    function pickDifferentIndex() {
+      if (groupShotImages.length <= 1) return 0;
+
+      let nextIndex;
+      do {
+        nextIndex = Math.floor(Math.random() * groupShotImages.length);
+      } while (nextIndex === currentGroupShotIndex);
+
+      return nextIndex;
+    }
+
+    function setGroupShot(index) {
       const img = document.getElementById('randomGroupShot');
       if (!img) return;
 
-      let randomFile;
-
-      do {
-        randomFile = groupShotImages[Math.floor(Math.random() * groupShotImages.length)];
-      } while (randomFile === lastGroupShot && groupShotImages.length > 1);
-
-      lastGroupShot = randomFile;
+      currentGroupShotIndex = index;
+      const nextSrc = 'https://walk-lostark.github.io/cute/s/' + groupShotImages[index] + '?r=' + Date.now();
 
       img.classList.add('changing');
 
+      // src를 바로 바꿔서 클릭 즉시 이미지가 바뀌도록 처리
+      img.src = nextSrc;
+
       setTimeout(function () {
-        img.src = 'https://walk-lostark.github.io/cute/s/' + randomFile;
-        img.onload = function () {
-          img.classList.remove('changing');
-        };
-      }, 120);
+        img.classList.remove('changing');
+      }, 180);
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
+    function setRandomGroupShot() {
+      setGroupShot(pickDifferentIndex());
+    }
+
+    // 화살표 onclick에서 바로 호출되도록 전역 함수로 등록
+    window.changeGroupShot = function (event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      setRandomGroupShot();
+      return false;
+    };
+
+    function initGroupShot() {
+      const img = document.getElementById('randomGroupShot');
+      if (!img) return;
+
+      // 첫 진입 시에도 랜덤 이미지 표시
       setRandomGroupShot();
 
-      document.querySelectorAll('.groupShotArrow').forEach(function (btn) {
-        btn.addEventListener('click', function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          setRandomGroupShot();
-        });
-      });
-    });
+      // onclick이 막히는 환경까지 대비해서 이벤트 위임도 함께 등록
+      document.addEventListener('click', function (event) {
+        if (event.target && event.target.closest('.groupShotArrow')) {
+          window.changeGroupShot(event);
+        }
+      }, true);
+    }
 
-    // 슬라이드를 넘기다가 단체스샷 페이지가 보일 때마다 다시 랜덤 표시
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initGroupShot);
+    } else {
+      initGroupShot();
+    }
+
+    // 슬라이드를 넘기다가 단체스샷 페이지가 보일 때마다 다른 랜덤 사진 표시
     setInterval(function () {
       const img = document.getElementById('randomGroupShot');
       if (!img) return;
