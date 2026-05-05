@@ -102,7 +102,11 @@ div, span, button, a {
 제목::[단체스샷 잠깐][[보시고 가실게요~!]]
 ===
 <center>
-  <img id="randomGroupShot" src="" alt="커염 길드 단체스샷">
+  <img id="randomGroupShot"
+       src=""
+       alt="커염 길드 단체스샷"
+       onclick="changeGroupShot(event)"
+       style="cursor:pointer;">
 </center>
 ---
 다음버튼::계속
@@ -275,6 +279,12 @@ div, span, button, a {
   max-width: 720px;
   height: auto;
   border-radius: 18px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+#randomGroupShot:active {
+  transform: scale(0.97);
 }
 
 /* PC 화면에서만 세로 비율 줄이기 */
@@ -356,24 +366,67 @@ setInterval(detectSlideChange, 300);
 </script>
    
 <script>
-  // 단체스샷 페이지: v01.jpg ~ v07.jpg 중 랜덤 표시
+  // 단체스샷 페이지: v01.png ~ v07.png 중 현재 사진과 다른 랜덤 사진 표시
   (function () {
     const groupShotImages = [
       'v01.png', 'v02.png', 'v03.png', 'v04.png',
       'v05.png', 'v06.png', 'v07.png'
     ];
 
-    function setRandomGroupShot() {
+    let currentGroupShotIndex = -1;
+
+    function pickDifferentIndex() {
+      if (groupShotImages.length <= 1) return 0;
+
+      let nextIndex;
+      do {
+        nextIndex = Math.floor(Math.random() * groupShotImages.length);
+      } while (nextIndex === currentGroupShotIndex);
+
+      return nextIndex;
+    }
+
+    function setGroupShot(index) {
       const img = document.getElementById('randomGroupShot');
       if (!img) return;
 
-      const randomFile = groupShotImages[Math.floor(Math.random() * groupShotImages.length)];
-      img.src = 'https://walk-lostark.github.io/cute/s/' + randomFile;
+      currentGroupShotIndex = index;
+      img.src = 'https://walk-lostark.github.io/cute/s/' + groupShotImages[index] + '?r=' + Date.now();
     }
 
-    document.addEventListener('DOMContentLoaded', setRandomGroupShot);
+    function setRandomGroupShot() {
+      setGroupShot(pickDifferentIndex());
+    }
 
-    // 슬라이드를 넘기다가 단체스샷 페이지가 보일 때마다 다시 랜덤 표시
+    // 사진 onclick에서 바로 호출되도록 전역 함수로 등록
+    window.changeGroupShot = function (event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      setRandomGroupShot();
+      return false;
+    };
+
+    function initGroupShot() {
+      const img = document.getElementById('randomGroupShot');
+      if (!img) return;
+
+      // 첫 진입 시에도 랜덤 이미지 표시
+      setRandomGroupShot();
+
+      // onclick이 막히는 환경까지 대비해서 이벤트도 함께 등록
+      img.addEventListener('click', window.changeGroupShot, true);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initGroupShot);
+    } else {
+      initGroupShot();
+    }
+
+    // 슬라이드를 넘기다가 단체스샷 페이지가 보일 때마다 다른 랜덤 사진 표시
     setInterval(function () {
       const img = document.getElementById('randomGroupShot');
       if (!img) return;
