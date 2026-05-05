@@ -101,9 +101,11 @@ div, span, button, a {
 
 제목::[단체스샷 잠깐][[보시고 가실게요~!]]
 ===
-<center>
+<div class="groupShotWrap">
+  <button type="button" class="groupShotArrow groupShotPrev" aria-label="이전 단체스샷">&lt;</button>
   <img id="randomGroupShot" src="" alt="커염 길드 단체스샷">
-</center>
+  <button type="button" class="groupShotArrow groupShotNext" aria-label="다음 단체스샷">&gt;</button>
+</div>
 ---
 다음버튼::계속
 
@@ -270,22 +272,72 @@ div, span, button, a {
     }
   }
 
-   #randomGroupShot {
-  width: 100%;
-  max-width: 720px;
-  height: auto;
-  border-radius: 18px;
-}
-
-/* PC 화면에서만 세로 비율 줄이기 */
-@media (min-width: 769px) {
-  #randomGroupShot {
-    max-height: 430px;
-    width: auto;
-    max-width: 720px;
-    object-fit: contain;
+  .groupShotWrap {
+    position: relative;
+    width: 100%;
+    max-width: 820px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
   }
-}
+
+  #randomGroupShot {
+    width: 100%;
+    max-width: 720px;
+    height: auto;
+    border-radius: 18px;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+
+  #randomGroupShot.changing {
+    opacity: 0.35;
+    transform: scale(0.98);
+  }
+
+  .groupShotArrow {
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 193, 7, 0.92);
+    color: #222;
+    font-size: 28px;
+    line-height: 1;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  }
+
+  .groupShotArrow:hover {
+    background: #ffc107;
+    transform: scale(1.08);
+  }
+
+  /* PC 화면에서만 세로 비율 줄이기 */
+  @media (min-width: 769px) {
+    #randomGroupShot {
+      max-height: 430px;
+      width: auto;
+      max-width: 720px;
+      object-fit: contain;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .groupShotWrap {
+      gap: 6px;
+    }
+
+    .groupShotArrow {
+      width: 34px;
+      height: 34px;
+      font-size: 23px;
+      flex: 0 0 34px;
+    }
+  }
 </style>
 
 <script>
@@ -356,22 +408,48 @@ setInterval(detectSlideChange, 300);
 </script>
    
 <script>
-  // 단체스샷 페이지: v01.jpg ~ v07.jpg 중 랜덤 표시
+  // 단체스샷 페이지: v01.png ~ v07.png 중 랜덤 표시 + 좌우 화살표 클릭 시 다른 사진 표시
   (function () {
     const groupShotImages = [
       'v01.png', 'v02.png', 'v03.png', 'v04.png',
       'v05.png', 'v06.png', 'v07.png'
     ];
 
+    let lastGroupShot = '';
+
     function setRandomGroupShot() {
       const img = document.getElementById('randomGroupShot');
       if (!img) return;
 
-      const randomFile = groupShotImages[Math.floor(Math.random() * groupShotImages.length)];
-      img.src = 'https://walk-lostark.github.io/cute/s/' + randomFile;
+      let randomFile;
+
+      do {
+        randomFile = groupShotImages[Math.floor(Math.random() * groupShotImages.length)];
+      } while (randomFile === lastGroupShot && groupShotImages.length > 1);
+
+      lastGroupShot = randomFile;
+
+      img.classList.add('changing');
+
+      setTimeout(function () {
+        img.src = 'https://walk-lostark.github.io/cute/s/' + randomFile;
+        img.onload = function () {
+          img.classList.remove('changing');
+        };
+      }, 120);
     }
 
-    document.addEventListener('DOMContentLoaded', setRandomGroupShot);
+    document.addEventListener('DOMContentLoaded', function () {
+      setRandomGroupShot();
+
+      document.querySelectorAll('.groupShotArrow').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          setRandomGroupShot();
+        });
+      });
+    });
 
     // 슬라이드를 넘기다가 단체스샷 페이지가 보일 때마다 다시 랜덤 표시
     setInterval(function () {
