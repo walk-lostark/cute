@@ -102,11 +102,7 @@ div, span, button, a {
 제목::[단체스샷 잠깐][[보시고 가실게요~!]]
 ===
 <center>
-  <img id="randomGroupShot"
-       src=""
-       alt="커염 길드 단체스샷"
-       onclick="changeGroupShot(event)"
-       style="cursor:pointer;">
+  <img id="randomGroupShot" src="" alt="커염 길드 단체스샷">
 </center>
 ---
 다음버튼::계속
@@ -394,28 +390,6 @@ setInterval(detectSlideChange, 300);
       }
     }, 300);
   })();
-
-   let currentIndex = -1;
-
-function changeGroupShot(event) {
-  if (event) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
-  const img = document.getElementById('randomGroupShot');
-  if (!img) return;
-
-  let nextIndex;
-
-  do {
-    nextIndex = Math.floor(Math.random() * groupShotImages.length);
-  } while (nextIndex === currentIndex);
-
-  currentIndex = nextIndex;
-
-  img.src = 'https://walk-lostark.github.io/cute/s/' + groupShotImages[nextIndex] + '?r=' + Date.now();
-}
 </script>
 
    </body>
